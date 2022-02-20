@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>MyMovies API Documentation</title>
+    <style>
+      table, th, td {border:1px solid black;}
+    </style>
+  </head>
+  <body>
+    <h1>MyMovies Application</h1>
+    <p>This is the server-side component of a “movies” web application.<br>
+      The web application will provide users with access to information about different movies,<br>
+      directors, and genres. Users will be able to sign up, update their personal information,<br>
+      and create a list of their favorite movies.
+    </p>
+    <br><br>
+    <h3>URL requests and endpoints</h3>
+    <br>
+    <table style="width:100%">
+      <tr>
+        <th>Client Request</th>
+        <th>URL</th>
+        <th>HTTP Method</th>
+        <th>Request Body Data Format</th>
+        <th>Response Body Data Format</th>
+      </tr>
+      <tr>
+        <td>Return a list of ALL movies to the user</td>
+        <td>/movies</td>
+        <td>GET</td>
+        <td>none</td>
+        <td>A JSON object holding data about all the movies</td>
+      </tr>
+      <tr>
+        <td>Return data (description, genre, director, image URL, whether it’s featured or not) about a single movie by title to the user</td>
+        <td>/movies/:title</td>
+        <td>GET</td>
+        <td>none</td>
+        <td>A JSON object holding data about a single movie. Example:<br>
+            {<br>
+              title : "Titanic",<br>
+              genre: "Drama",<br>
+              director: "James Cameron"<br>
+              img_url: "xyz"<br>
+            }
+        </td>
+      </tr>
+      <tr>
+        <td>Return data about a genre (description) by name/title (e.g., “Thriller”)</td>
+        <td>/genre/:genre_name</td>
+        <td>GET</td>
+        <td>none</td>
+        <td>A JSON object holding data about a genre. Example:<br>
+            {<br>
+              genre_name : "Drama",<br>
+              description: "xyz"<br>
+            }
+        </td>
+      </tr>
+      <tr>
+        <td>Return data about a director (bio, birth year, death year) by name</td>
+        <td>/director/:director_name</td>
+        <td>GET</td>
+        <td>none</td>
+        <td>A JSON object holding data about a director. Example:<br>
+            {<br>
+              director_name : "James Cameron",<br>
+              birth_year: 1954,<br>
+              bio: "xyz"<br>
+            }
+        </td>
+      </tr>
+      <tr>
+        <td>Allow new users to register</td>
+        <td>/users</td>
+        <td>POST</td>
+        <td>A JSON object holding the user information. Example:<br>
+            {<br>
+            "user_name": "Maxi123",<br>
+            "email": "mustermann@mail.de",<br>
+            "password": "123456!",<br>
+            "date of birth": "01.01.1990"<br>
+            }
+        </td>
+        <td>A success message indicating that the profile was successfully created.</td>
+      </tr>
+      <tr>
+        <td>Allow users to update their user info (username)</td>
+        <td>/users/:email/:user_name</td>
+        <td>PUT</td>
+        <td>none</td>
+        <td>A success message indicating that the profile was successfully updated.</td>
+      </tr>
+      <tr>
+        <td>Allow users to add a movie to their list of favorites</td>
+        <td>/users/:email/favorites/:title</td>
+        <td>POST</td>
+        <td>none</td>
+        <td>A success message indicating the name of the movie that has been successfully added to the list of favorites.</td>
+      </tr>
+      <tr>
+        <td>Allow users to remove a movie from their list of favorites</td>
+        <td>/users/:email/favorites/:title</td>
+        <td>DELETE</td>
+        <td>none</td>
+        <td>A success message indicating the name of the movie that has been successfully removed from the list of favorites.</td>
+      </tr>
+      <tr>
+        <td>Allow existing users to deregister</td>
+        <td>/users/:email</td>
+        <td>DELETE</td>
+        <td>none</td>
+        <td>A success message indicating that the profile was successfully deleted.</td>
+      </tr>
+    </table>
+  </body>
+</html>
