@@ -67,36 +67,57 @@ let directors = [
   }
 ];
 
-// // Create array of objects that holds data about users
+// Create array of objects that holds data about users
 let users = [];
 
-// Return a list of ALL movies to the user
+// READ: Return a list of ALL movies to the user
 app.get('/movies', (req, res) => {
-  res.json(movies);
+  res.status(200).json(movies);
 });
 
-// Return data (description, genre, director, image URL, whether it’s featured or not) about a single movie by title to the user
+// READ: Return data (description, genre, director, image URL, whether it’s featured or not) about a single movie by title to the user
 app.get('/movies/:title', (req, res) => {
-  res.json(movies.find((movie) => {
+  // Find the movie with the corresponding title
+  let movie = movies.find((movie) => {
     return movie.title === req.params.title;
-  }));
+  });
+
+  if(movie) { // If movie was found, return json, else throw error
+    res.status(200).json(movie);
+  } else {
+    res.status(400).send('Movie not found');
+  };
 });
 
-// Return data about a genre (description) by name/title (e.g., “Fantasy”)
+// READ: Return data about a genre (description) by name/title (e.g., “Fantasy”)
 app.get('/genres/:genre_name', (req, res) => {
-  res.json(genres.find((genre) => {
+  // Find the genre with the corresponding genre name
+  let genre = genres.find((genre) => {
     return genre.genre_name === req.params.genre_name;
-  }));
+  });
+
+  if(genre){ // If genre was found, return json, else throw error
+    res.status(200).json(genre);
+  } else {
+    res.status(400).send('Genre not found');
+  };
 });
 
-// Return data about a director (bio, birth year, death year) by name
+// READ: Return data about a director (bio, birth year, death year) by name
 app.get('/directors/:director_name', (req, res) => {
-  res.json(directors.find((director) => {
+  // Find the director with the corresponding name
+  let director = directors.find((director) => {
     return director.director_name === req.params.director_name;
-  }));
+  });
+
+  if (director) { // If director was found, return json, else throw error
+    res.status(200).json(director);
+  } else {
+    res.status(400).send('Director not found');
+  };
 });
 
-// Allow new users to register
+// CREATE: Allow new users to register
 app.post('/users', (req, res) => {
   let newUser = req.body; // using body-parser to get request body in JSON format
 
@@ -109,13 +130,13 @@ app.post('/users', (req, res) => {
   };
 });
 
-// Return a list of ALL users (only for testing purposes)
+// READ: Return a list of ALL users (only for testing purposes)
 app.get('/users', (req, res) => {
   res.json(users);
 });
 
 
-// Allow users to update their user info (username)
+// UPDATE: Allow users to update their user info (username)
 app.put('/users/:email/:user_name', (req, res) => {
   // Find the user with the corresponding email
   let user = users.find((user) => {
@@ -124,13 +145,13 @@ app.put('/users/:email/:user_name', (req, res) => {
 
   if(user){ // if a user could be found, change user name
     user.user_name = req.params.user_name;
-    res.status(201).send('Your username was successfully updated to: ' + req.params.user_name);
+    res.status(200).send('Your username was successfully updated to: ' + req.params.user_name);
   } else { // else, return error message
-    res.status(404).send('User with mail address ' + req.params.email + ' was not found.');
+    res.status(400).send('User with mail address ' + req.params.email + ' was not found.');
   };
 });
 
-// Allow users to add a movie to their list of favorites
+// CREATE: Allow users to add a movie to their list of favorites
 app.post('/users/:email/favorites/:title', (req, res) => {
   // Find the user with the corresponding email
   let user = users.find((user) => {
@@ -148,7 +169,7 @@ app.post('/users/:email/favorites/:title', (req, res) => {
   };
 });
 
-// Allow users to remove a movie from their list of favorites
+// DELETE: Allow users to remove a movie from their list of favorites
 app.delete('/users/:email/favorites/:title', (req, res) => {
   // Find the user with the corresponding email
   let user = users.find((user) => {
@@ -159,16 +180,16 @@ app.delete('/users/:email/favorites/:title', (req, res) => {
     let index = user.favorites.indexOf(req.params.title);
     if (index > -1){
       user.favorites.splice(index, 1);
-      res.status(201).send('Movie with the title ' + req.params.title + " was successfully deleted from your list.");
+      res.status(200).send('Movie with the title ' + req.params.title + " was successfully deleted from your list.");
     } else {
-      res.status(404).send('Movie not found in list of favorites.');
+      res.status(400).send('Movie not found in list of favorites.');
     }
   } else { // If user cannot be found, return error
-    res.status(404).send('User with the email ' + req.params.email + ' was not found.');
+    res.status(400).send('User with the email ' + req.params.email + ' was not found.');
   };
 });
 
-// Allow existing users to deregister
+// DELETE: Allow existing users to deregister
 app.delete('/users/:email', (req, res) => {
   // Find the user with the corresponding email
   let user = users.find((user) => {
@@ -181,9 +202,9 @@ app.delete('/users/:email', (req, res) => {
       return obj.email != req.params.email;
     });
     // Send response message
-    res.status(201).send('User with the email ' + req.params.email + ' was sucessfully deleted.');
+    res.status(200).send('User with the email ' + req.params.email + ' was sucessfully deleted.');
   } else { // If user cannot be found, return error
-    res.status(404).send('User with the email ' + req.params.email + ' was not found.');
+    res.status(400).send('User with the email ' + req.params.email + ' was not found.');
   };
 });
 
