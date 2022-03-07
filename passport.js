@@ -24,9 +24,14 @@ passport.use(new LocalStrategy({
     // No user matches username
     if(!user){
       console.log('incorrect username');
-      return callback(null, false, {message: 'Incorrect username or password.'});
+      return callback(null, false, {message: 'Incorrect username.'});
     }
-    // Username matches - Execute callback
+    // Password wrong (use validatePassword to compare to hashed password stored in DB)
+    if(!user.validatePassword(password)){
+      console.log('incorrent password');
+      return callback(null, false, {message: 'Incorrent password.'});
+    }
+    // Username and password match - Execute callback
     console.log('finished');
     return callback(null, user);
   });

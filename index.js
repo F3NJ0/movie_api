@@ -104,6 +104,7 @@ app.get('/movies/director/:Name', passport.authenticate('jwt', {session: false})
 // CREATE: Allow new users to register
 // Username, Password & Email are required fields!
 app.post('/users', (req, res) => {
+  let hashedPassword = Users.hashPassword(req.body.Password); // Create hashedPassword from given Password
   Users.findOne({Username : req.body.Username})
     .then((user) => {
       if(user) { // If the same username already exists, throw an error
@@ -112,7 +113,7 @@ app.post('/users', (req, res) => {
         Users
           .create({
             Username: req.body.Username,
-            Password: req.body.Password,
+            Password: hashedPassword, // Store only hashed password
             Email: req.body.Email,
             Birthday: req.body.Birthday
           })
