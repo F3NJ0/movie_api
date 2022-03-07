@@ -32,6 +32,9 @@ app.use(cors({
   }
 }));
 
+// Import express-validator to validate input fields
+const {check, validationResult} = require('express-validator');
+
 // Import auth.js file
 let auth = require('./auth')(app);
 
@@ -103,8 +106,25 @@ app.get('/movies/director/:Name', passport.authenticate('jwt', {session: false})
 
 // CREATE: Allow new users to register
 // Username, Password & Email are required fields!
-app.post('/users', (req, res) => {
+app.post('/users',
+// Validation logic
+[
+  check('Username', 'Username is required (min 3 characters).').isLength({min: 5}),
+  check('Username', 'Username contains non alphanumeric characters - not allowed.').isAlphanumeric(),
+  check('Password', 'Password is required.').not().isEmpty(),
+  check('Email', 'Email does not appear to be valid.').isEmail()
+], (req, res) => {
+
+  // Check validation object for errors
+  let errors = validationResult(req);
+
+  if(!errors.isEmpty()){
+    return res.status(422).json({errors: errors.array()});
+  }
+
   let hashedPassword = Users.hashPassword(req.body.Password); // Create hashedPassword from given Password
+
+  // Create new user
   Users.findOne({Username : req.body.Username})
     .then((user) => {
       if(user) { // If the same username already exists, throw an error
