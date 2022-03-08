@@ -179,11 +179,27 @@ app.get('/users/:Username', passport.authenticate('jwt', {session: false}), (req
 });
 
 // UPDATE: Allow users to update their user info (find by username), expecting request body with updated info
-app.put('/users/:Username', passport.authenticate('jwt', {session: false}), (req, res) => {
+app.put('/users/:Username', passport.authenticate('jwt', {session: false}),
+// Validation logic
+[
+  check('Username', 'Username is required (min 3 characters).').isLength({min: 5}),
+  check('Username', 'Username contains non alphanumeric characters - not allowed.').isAlphanumeric(),
+  check('Password', 'Password is required.').not().isEmpty(),
+  check('Email', 'Email does not appear to be valid.').isEmail()
+], (req, res) => {
+  // Check validation object for errors
+  let errors = validationResult(req);
+
+  if(!errors.isEmpty()){
+    return res.status(422).json({errors: errors.array()});
+  }
+
+  let hashedPassword = Users.hashPassword(req.body.Password); // Create hashedPassword from given Password
+
   Users.findOneAndUpdate({ Username : req.params.Username}, // Find user by existing username
     {$set: { // Info from request body that can be updated
       Username: req.body.Username,
-      Password: req.body.Password,
+      Password: hashedPassword, // Store only hashed password
       Email: req.body.Email,
       Birthday: req.body.Birthday
       }
