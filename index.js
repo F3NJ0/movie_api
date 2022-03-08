@@ -19,7 +19,7 @@ const mongoose = require('mongoose');
 
 // Import and use CORS, set allowed origins
 const cors = require('cors');
-let allowedOrigins = ['http://localhost:8000', 'http://testsite.com'];
+let allowedOrigins = ['http://localhost:8000', 'http://testsite.com', 'https://femmovies.herokuapp.com'];
 
 app.use(cors({
   origin: (origin, callback) => {
