@@ -104,7 +104,7 @@ app.get('/movies/director/:Name', passport.authenticate('jwt', {session: false})
     });
 });
 
-// CREATE: Allow new users to register
+// CREATE: Allow new users to register, no jwt authentication needed!
 // Username, Password & Email are required fields!
 app.post('/users',
 // Validation logic
