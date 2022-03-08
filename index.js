@@ -273,7 +273,7 @@ app.use((err, req, res, next) => {
 });
 
 // Listen to port 8000
-const port = 8000;
-app.listen(port, () => {
-  console.log('Your app is listening on port ' + port);
+const port = process.env.PORT || 8000;
+app.listen(port, '0.0.0.0',() => {
+ console.log('Listening on Port ' + port);
 });
