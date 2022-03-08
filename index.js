@@ -42,8 +42,12 @@ let auth = require('./auth')(app);
 const passport = require('passport');
 require('./passport');
 
-// Connecting to MongoDB FemMoviesDB
-mongoose.connect('mongodb://localhost:27017/FemMoviesDB', { useNewUrlParser: true, useUnifiedTopology: true });
+/* Connecting to MongoDB FemMoviesDB */
+// a) Connect to Local DB
+//mongoose.connect('mongodb://localhost:27017/FemMoviesDB', { useNewUrlParser: true, useUnifiedTopology: true });
+
+// b) Connect to Hosted DB
+mongoose.connect(process.env.CONNECTION_URI, { useNewUrlParser: true, useUnifiedTopology: true });
 
 // Log basic request data in terminal using Morgan middleware library
 app.use(morgan('common'));
