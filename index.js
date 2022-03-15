@@ -19,7 +19,7 @@ Users = Models.User;
 
 // Import and use CORS, set allowed origins
 const cors = require('cors');
-let allowedOrigins = ['http://localhost:8000', 'http://testsite.com', 'https://femmovies.herokuapp.com'];
+let allowedOrigins = ['http://localhost:8000', 'http://testsite.com', 'https://femmovies.herokuapp.com', 'http://localhost:1234'];
 
 app.use(cors({
   origin: (origin, callback) => {
@@ -54,7 +54,7 @@ app.use(morgan('common'));
 
 // READ: Return a list of ALL movies to the user
 app.get('/movies',
-  //passport.authenticate('jwt', {session: false}), 
+  //passport.authenticate('jwt', {session: false}),
   (req, res) => {
     Movies.find()
       .then((movies) => {
