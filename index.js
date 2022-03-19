@@ -19,8 +19,8 @@ Users = Models.User;
 
 // Import and use CORS, set allowed origins
 const cors = require('cors');
+/* UNCOMMENT TO SET CORS POLICY!!
 //let allowedOrigins = ['http://localhost:8000', 'http://testsite.com', 'https://femmovies.herokuapp.com', 'http://localhost:1234'];
-let allowedOrigins = '*';
 
 app.use(cors({
   origin: (origin, callback) => {
@@ -31,6 +31,13 @@ app.use(cors({
     }
     return callback(null, true);
   }
+}));
+
+UNCOMMENT TO SET CORS POLICY
+*/
+
+app.use(cors({
+    origin: '*'
 }));
 
 // Import express-validator to validate input fields
