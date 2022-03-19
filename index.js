@@ -19,7 +19,8 @@ Users = Models.User;
 
 // Import and use CORS, set allowed origins
 const cors = require('cors');
-let allowedOrigins = ['http://localhost:8000', 'http://testsite.com', 'https://femmovies.herokuapp.com', 'http://localhost:1234'];
+//let allowedOrigins = ['http://localhost:8000', 'http://testsite.com', 'https://femmovies.herokuapp.com', 'http://localhost:1234'];
+let allowedOrigins = '*';
 
 app.use(cors({
   origin: (origin, callback) => {
