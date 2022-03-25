@@ -73,9 +73,24 @@ app.get('/movies',
       });
   });
 
+// // READ: Return data (description, genre, director, image URL, whether it’s featured or not) about a single movie by title to the user
+// app.get('/movies/:title', passport.authenticate('jwt', { session: false }), (req, res) => {
+//   Movies.findOne({ Title: req.params.title }) // Find the movie by title
+//     .then((movie) => {
+//       if (movie) { // If movie was found, return json, else throw error
+//         res.status(200).json(movie);
+//       } else {
+//         res.status(400).send('Movie not found');
+//       };
+//     })
+//     .catch((err) => {
+//       res.status(500).send('Error: ' + err);
+//     });
+// });
+
 // READ: Return data (description, genre, director, image URL, whether it’s featured or not) about a single movie by title to the user
-app.get('/movies/:title', passport.authenticate('jwt', { session: false }), (req, res) => {
-  Movies.findOne({ Title: req.params.title }) // Find the movie by title
+app.get('/movies/:movieId', passport.authenticate('jwt', { session: false }), (req, res) => {
+  Movies.findOne({ _id: req.params.movieId }) // Find the movie by title
     .then((movie) => {
       if (movie) { // If movie was found, return json, else throw error
         res.status(200).json(movie);
@@ -123,7 +138,7 @@ app.get('/movies/director/:Name', passport.authenticate('jwt', { session: false 
 app.post('/users',
   // Validation logic
   [
-    check('Username', 'Username is required (min 3 characters).').isLength({ min: 5 }),
+    check('Username', 'Username is required (min 3 characters).').isLength({ min: 3 }),
     check('Username', 'Username contains non alphanumeric characters - not allowed.').isAlphanumeric(),
     check('Password', 'Password is required.').not().isEmpty(),
     check('Email', 'Email does not appear to be valid.').isEmail()
