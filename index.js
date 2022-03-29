@@ -221,10 +221,10 @@ app.put('/users/:Username', passport.authenticate('jwt', { session: false }),
       return res.status(422).json({ errors: errors.array() });
     }
 
-    if(req.body.Password){
-      let hashedPassword = Users.hashPassword(req.body.Password); // Create hashedPassword from given Password
-    }
-    
+
+    let hashedPassword = Users.hashPassword(req.body.Password); // Create hashedPassword from given Password
+
+
     Users.findOneAndUpdate({ Username: req.params.Username }, // Find user by existing username
       {
         $set: { // Info from request body that can be updated
