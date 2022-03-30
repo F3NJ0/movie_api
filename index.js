@@ -221,27 +221,43 @@ app.put('/users/:Username', passport.authenticate('jwt', { session: false }),
       return res.status(422).json({ errors: errors.array() });
     }
 
-
-    let hashedPassword = Users.hashPassword(req.body.Password); // Create hashedPassword from given Password
-
-
-    Users.findOneAndUpdate({ Username: req.params.Username }, // Find user by existing username
-      {
-        $set: { // Info from request body that can be updated
-          Username: req.body.Username,
-          Password: hashedPassword, // Store only hashed password
-          Email: req.body.Email,
-          Birthday: req.body.Birthday
-        }
-      },
-      { new: true }) // Return the updated document
-      .then((updatedUser) => {
-        res.json(updatedUser); // Return json object of updatedUser
-      })
-      .catch((err) => {
-        console.error(err);
-        res.status(500).send('Error: ' + err);
-      });
+    if(req.body.hasOwnProperty('Password')){
+      let hashedPassword = Users.hashPassword(req.body.Password); // Create hashedPassword from given Password
+      Users.findOneAndUpdate({ Username: req.params.Username }, // Find user by existing username
+        {
+          $set: { // Info from request body that can be updated
+            Username: req.body.Username,
+            Password: hashedPassword, // Store only hashed password
+            Email: req.body.Email,
+            Birthday: req.body.Birthday
+          }
+        },
+        { new: true }) // Return the updated document
+        .then((updatedUser) => {
+          res.json(updatedUser); // Return json object of updatedUser
+        })
+        .catch((err) => {
+          console.error(err);
+          res.status(500).send('Error: ' + err);
+        });
+    } else {
+      Users.findOneAndUpdate({ Username: req.params.Username }, // Find user by existing username
+        {
+          $set: { // Info from request body that can be updated
+            Username: req.body.Username,
+            Email: req.body.Email,
+            Birthday: req.body.Birthday
+          }
+        },
+        { new: true }) // Return the updated document
+        .then((updatedUser) => {
+          res.json(updatedUser); // Return json object of updatedUser
+        })
+        .catch((err) => {
+          console.error(err);
+          res.status(500).send('Error: ' + err);
+        });
+    }
   });
 
 // CREATE: Allow users to add a movie to their list of favorites
