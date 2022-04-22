@@ -168,9 +168,6 @@ Process:
 
 <img src="https://github.com/F3NJ0/movie_api/blob/e76ae60627f20594db03740e68689624f33ceee3/img/Register%20with%20password%20hashing.png" alt="Screenshot successful password hashing">
 
-* Express-Validator for server-side data input validation
-
-<img src="https://user-images.githubusercontent.com/99111208/163312208-f2e15c6e-30d6-4ae8-b61f-b1221d045922.png" alt="Screenshot test of successful data validation in endpoint POST '/users/{Name}/movies/{Title}">
 
 * Adjust Environment variable to not reveal Connection URI
 
