@@ -31,7 +31,7 @@ Being a beginner I obviously learned a lot from implementing this API. The most 
 ### ... as a developer, who wants to work with the project
 1. Clone or download repository ...
 ```bash
-git clone https://github.com/LisaPMunich/Movie-API.git
+git clone https://github.com/F3NJ0/movie_api.git
 ```
 
 
