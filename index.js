@@ -37,7 +37,7 @@ UNCOMMENT TO SET CORS POLICY
 */
 
 app.use(cors({
-    origin: '*'
+  origin: '*'
 }));
 
 // Import express-validator to validate input fields
@@ -62,7 +62,7 @@ app.use(morgan('common'));
 
 // READ: Return a list of ALL movies to the user
 app.get('/movies',
-  passport.authenticate('jwt', {session: false}),
+  passport.authenticate('jwt', { session: false }),
   (req, res) => {
     Movies.find()
       .then((movies) => {
@@ -223,7 +223,7 @@ app.put('/users/:Username', passport.authenticate('jwt', { session: false }),
     }
 
     // If Password is given in request body, create hashedPassword from given Password
-    if(req.body.hasOwnProperty('Password')){
+    if (req.body.hasOwnProperty('Password')) {
       hashedPassword = Users.hashPassword(req.body.Password);
     }
 
@@ -259,6 +259,24 @@ app.post('/users/:Username/movies/:MovieID', passport.authenticate('jwt', { sess
       res.status(500).send('Error: ' + err);
     });
 });
+
+// READ: Get a list of favorite movies from the user
+app.get('/users/:Username/movies', passport.authenticate('jwt', { session: false }), (req, res) => {
+  Users.findOne({ Username: req.params.Username })
+    .then((user) => {
+      if (user) { // If a user with the corresponding username was found, return user info
+        res.status(200).json(user.FavoriteMovies);
+      } else {
+        res.status(400).send('Could not find favorite movies for this user');
+      };
+    })
+    .catch((err) => {
+      console.error(err);
+      res.status(500).send('Error: ' + err);
+    });
+});
+
+
 
 // DELETE: Allow users to remove a movie from their list of favorites
 app.delete('/users/:Username/movies/:MovieID', passport.authenticate('jwt', { session: false }), (req, res) => {
