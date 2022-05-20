@@ -5,7 +5,11 @@ const jwt = require('jsonwebtoken'),
 
 require('./passport.js');
 
-// Function to create JWT (expiring in 7 days, using HS256 algorithm to encode)
+/**
+ * creates JWT (expiring in 7 days, using HS256 algorithm to encode)
+ * @param {object} user 
+ * @returns user object, jwt, and additional information on token
+ */
 let generateJWTToken = (user) => {
   return jwt.sign(user, jwtSecret, {
     subject: user.Username,
@@ -15,24 +19,31 @@ let generateJWTToken = (user) => {
 };
 
 /* POST login. */
+/**
+ * handles user login, generating a jwt upon login
+ * @function generateJWTToken
+ * @param {*} router 
+ * @returns user object with jwt
+ * @requires passport
+ */
 module.exports = (router) => {
   router.post('/login', (req, res) => {
-    passport.authenticate('local', {session: false}, (err, user, info) => {
+    passport.authenticate('local', { session: false }, (err, user, info) => {
       if (err || !user) {
         return res.status(400).json({
           message: 'Something went wrong',
           user: user
         });
       }
-      req.login(user, {session: false}, (err) => {
+      req.login(user, { session: false }, (err) => {
         if (err) {
           res.status(500).send(err);
         }
         // If user exists, generate JWT
         let token = generateJWTToken(user.toJSON());
         // Return the generated token
-        return res.json({user, token});
+        return res.json({ user, token });
       });
-    })(req,res);
+    })(req, res);
   });
 }
