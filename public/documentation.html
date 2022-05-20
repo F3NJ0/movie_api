@@ -1,12 +1,18 @@
 <!DOCTYPE html>
 <html>
+
   <head>
     <meta charset="utf-8">
     <title>MyMovies API Documentation</title>
     <style>
-      table, th, td {border:1px solid black;}
+      table,
+      th,
+      td {
+        border: 1px solid black;
+      }
     </style>
   </head>
+
   <body>
     <h1>MyMovies Application</h1>
     <p>This is the server-side component of a “movies” web application.<br>
@@ -33,7 +39,8 @@
         <td>A JSON object holding data about all the movies</td>
       </tr>
       <tr>
-        <td>Return data (description, genre, director, image URL, whether it’s featured or not) about a single movie by title to the user</td>
+        <td>Return data (description, genre, director, image URL, whether it’s featured or not) about a single movie by
+          title to the user</td>
         <td>/movies/:title</td>
         <td>GET</td>
         <td>none</td>
@@ -152,6 +159,13 @@
         <td>A JSON object holding data about the updated user</td>
       </tr>
       <tr>
+        <td>Return the list of favorite movies of this user</td>
+        <td>/users/:Username/movies</td>
+        <td>GET</td>
+        <td>none</td>
+        <td>A JSON object holding the _ids of the user's favorite movies</td>
+      </tr>
+      <tr>
         <td>Allow users to add a movie to their list of favorites</td>
         <td>/users/:Username/movies/:MovieID</td>
         <td>POST</td>
@@ -181,4 +195,5 @@
       </tr>
     </table>
   </body>
+
 </html>
